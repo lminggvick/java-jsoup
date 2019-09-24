@@ -1,20 +1,18 @@
 package Builder;
 
 import Interface.Buildable;
-import Model.PeterPanPost;
+import Model.PeterPanProperty;
 import Model.PropertyType;
 import Model.TradeType;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class PostBuilder implements Buildable {
     private String title;
     private String url;
-    private LocalDateTime date;
+    private String date;
     private String phone;
     private String address;
     private String price;
@@ -22,7 +20,7 @@ public class PostBuilder implements Buildable {
     private PropertyType propertyType;
     private TradeType tradeType;
 
-    public PostBuilder(String title, String url, LocalDateTime date) {
+    public PostBuilder(String title, String url, String date) {
         this.title = title;
         this.url = url;
         this.date = date;
@@ -59,7 +57,7 @@ public class PostBuilder implements Buildable {
     }
 
     @Override
-    public PeterPanPost build() {
-        return new PeterPanPost(this);
+    public PeterPanProperty build() {
+        return new PeterPanProperty(this);
     }
 }
