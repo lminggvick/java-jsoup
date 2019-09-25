@@ -1,4 +1,4 @@
-package Model;
+package Model.Type;
 
 import Interface.TypeMapper;
 import com.fasterxml.jackson.annotation.JsonFormat;

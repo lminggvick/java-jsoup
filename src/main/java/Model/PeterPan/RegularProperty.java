@@ -1,8 +1,9 @@
-package Model;
+package Model.PeterPan;
 
+import Model.Type.TradeType;
 import lombok.*;
 
-import Builder.PostBuilder;
+import Builder.RegularPostBuilder;
 
 /**
  * Todo)
@@ -13,9 +14,10 @@ import Builder.PostBuilder;
  */
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Getter
 @Setter
-public class PeterPanProperty {
+public class RegularProperty {
     private String title;
     private String url;
     private String date;
@@ -33,7 +35,7 @@ public class PeterPanProperty {
     private String movePossibleDate;
     private TradeType tradeType;
 
-    public PeterPanProperty(PostBuilder builder) {
+    public RegularProperty(RegularPostBuilder builder) {
         this.title = builder.getTitle();
         this.url = builder.getUrl();
         this.date = builder.getDate();

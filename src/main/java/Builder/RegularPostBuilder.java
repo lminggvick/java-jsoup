@@ -1,14 +1,14 @@
 package Builder;
 
 import Interface.Buildable;
-import Model.PeterPanProperty;
-import Model.TradeType;
+import Model.PeterPan.RegularProperty;
+import Model.Type.TradeType;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class PostBuilder implements Buildable {
+public class RegularPostBuilder implements Buildable {
     private static final String NON_PRICE = "없음";
 
     private String title;
@@ -28,38 +28,38 @@ public class PostBuilder implements Buildable {
     private String movePossibleDate;
     private TradeType tradeType;
 
-    public PostBuilder(String title, String url, String date) {
+    public RegularPostBuilder(String title, String url, String date) {
         this.title = title;
         this.url = url;
         this.date = date;
     }
 
-    public PostBuilder phone(String phone) {
+    public RegularPostBuilder phone(String phone) {
         this.phone = phone;
         return this;
     }
 
-    public PostBuilder address(String address) {
+    public RegularPostBuilder address(String address) {
         this.address = address;
         return this;
     }
 
-    public PostBuilder price(String price) {
+    public RegularPostBuilder price(String price) {
         this.price = price;
         return this;
     }
 
-    public PostBuilder propertyType(String propertyType) {
+    public RegularPostBuilder propertyType(String propertyType) {
         this.propertyType = propertyType;
         return this;
     }
 
-    public PostBuilder tradeType(String tradeTypeCode) {
+    public RegularPostBuilder tradeType(String tradeTypeCode) {
         this.tradeType = TradeType.create(tradeTypeCode);
         return this;
     }
 
-    public PostBuilder managementPrice(String price) {
+    public RegularPostBuilder managementPrice(String price) {
         if(price.trim().isEmpty()) {
             this.managementPrice = NON_PRICE;
             return this;
@@ -68,43 +68,43 @@ public class PostBuilder implements Buildable {
         return this;
     }
 
-    public PostBuilder roomCount(String count) {
+    public RegularPostBuilder roomCount(String count) {
         this.roomCount = count;
         return this;
     }
 
-    public PostBuilder floor(String floor) {
+    public RegularPostBuilder floor(String floor) {
         this.floor = floor;
         return this;
     }
 
-    public PostBuilder managementCategory(String category) {
+    public RegularPostBuilder managementCategory(String category) {
         this.managementCategory = category;
         return this;
     }
 
-    public PostBuilder heatingType(String type) {
+    public RegularPostBuilder heatingType(String type) {
         this.heatingType = type;
         return this;
     }
 
-    public PostBuilder option(String option) {
+    public RegularPostBuilder option(String option) {
         this.option = option;
         return this;
     }
 
-    public PostBuilder description(String description) {
+    public RegularPostBuilder description(String description) {
         this.description = description;
         return this;
     }
 
-    public PostBuilder movePossibleDate(String moveDate) {
+    public RegularPostBuilder movePossibleDate(String moveDate) {
         this.movePossibleDate = moveDate;
         return this;
     }
 
     @Override
-    public PeterPanProperty build() {
-        return new PeterPanProperty(this);
+    public RegularProperty build() {
+        return new RegularProperty(this);
     }
 }

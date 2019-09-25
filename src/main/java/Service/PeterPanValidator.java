@@ -1,7 +1,7 @@
 package Service;
 
 import Interface.ValidationStrategy;
-import Model.RegularType;
+import Model.Type.RegularType;
 import Model.ValidKeyword;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jsoup.select.Elements;

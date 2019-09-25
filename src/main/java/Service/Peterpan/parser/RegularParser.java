@@ -1,9 +1,10 @@
-package Service;
+package Service.Peterpan.parser;
 
-import Builder.PostBuilder;
-import Interface.ParseStrategy;
+import Builder.RegularPostBuilder;
 import Interface.ValidationStrategy;
-import Model.PeterPanProperty;
+import Model.PeterPan.RegularProperty;
+import Service.PeterPanService;
+import Service.PeterPanValidator;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,30 +20,28 @@ import java.util.Map;
 /**
  * Todo) 무엇을 파싱 할 것인지?
  */
-public class PeterPanParser implements ParseStrategy {
-    private static final Logger logger = LoggerFactory.getLogger(PeterPanParser.class);
+public class RegularParser extends PeterPanService {
+    private static final Logger logger = LoggerFactory.getLogger(RegularParser.class);
 
-    private final String prefix = "https://cafe.naver.com";
-    private final String postfix = "&search.sortBy=date";
     private ValidationStrategy validator;
-    private List<PeterPanProperty> properties;
-    private Elements elements;
+    private List<RegularProperty> properties;
+
     private Document document;
     private String url;
     private String date;
     private String title;
-    private String pageUrl;
 
-    public PeterPanParser() {
+    public RegularParser() {
+        super();
         this.validator = new PeterPanValidator();
     }
 
     @Override
-    public List<PeterPanProperty> parse(Elements elements, Map<String, String> cookies) throws IOException {
+    public List<RegularProperty> parse(Elements elements, Map<String, String> cookies) throws IOException {
         properties = new ArrayList<>();
 
         for(Element post : elements) {
-            url = prefix.concat(post.select("a").attr("href"));
+            url = super.prefix.concat(post.select("a").attr("href"));
 
             document = Jsoup.connect(url)
                     .cookies(cookies)
@@ -61,7 +60,7 @@ public class PeterPanParser implements ParseStrategy {
 
             document.select("table tbody");
 
-            properties.add(new PostBuilder(title, url, date)
+            properties.add(new RegularPostBuilder(title, url, date)
                     .address(document.select("#pp_location").text())
                     .price(document.select("#pp_fee").text())
                     .managementPrice(document.select("#pp_maintenance").text())
@@ -79,29 +78,5 @@ public class PeterPanParser implements ParseStrategy {
         }
 
         return properties;
-    }
-
-    @Override
-    public Elements initPosts(Document document, int maxPage) throws IOException {
-        this.elements = document.select(".board-list .article");
-        this.pageUrl = prefix.concat(document.select(".prev-next .on").attr("href"));
-
-        for (int n = 2; n < maxPage + 1; n++) {
-            elements.addAll(
-                    Jsoup.connect(convertPageToNext(pageUrl, n)).get().select(".board-list .article")
-            );
-        }
-
-        return elements;
-    }
-
-    @Override
-    public String convertPageToNext(String url, int next) {
-        String str = "";
-
-        str = url.substring(0, url.length() - 1);
-        str = str.concat(Integer.toString(next));
-
-        return str.concat(postfix);
     }
 }

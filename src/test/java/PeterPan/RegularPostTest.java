@@ -1,11 +1,12 @@
-import Builder.PostBuilder;
+package PeterPan;
+
+import Builder.RegularPostBuilder;
 import Interface.ParseStrategy;
 import Interface.ValidationStrategy;
-import Model.PeterPanProperty;
-import Model.PropertyType;
-import Model.TradeType;
+import Model.PeterPan.RegularProperty;
+import Model.Type.TradeType;
 import Service.NaverLoginService;
-import Service.PeterPanParser;
+import Service.Peterpan.parser.RegularParser;
 import Service.PeterPanValidator;
 import com.gargoylesoftware.htmlunit.WebClient;
 import org.jsoup.Jsoup;
@@ -28,9 +29,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class DataTest {
+public class RegularPostTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(DataTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegularPostTest.class);
     private static final String MOCK_URL = "https://cafe.naver.com/ArticleRead.nhn?clubid=10322296&page=1&inCafeSearch=true&searchBy=1&query=%C1%F8%C1%D6&includeAll=&exclude=&include=&exact=&searchdate=all&media=0&sortBy=date&articleid=12953032&referrerAllArticles=true";
     private static final String MOCK_POSTS_URL = "https://cafe.naver.com/ArticleSearchList.nhn?search.clubid=10322296&search.searchBy=0&search.query=%C1%F8%C1%D6";
 
@@ -39,6 +40,7 @@ public class DataTest {
 
     private static ValidationStrategy validator;
     private static ParseStrategy parser;
+
     private static NaverLoginService service;
 
     @BeforeClass
@@ -47,7 +49,7 @@ public class DataTest {
         cookies = new HashMap<>();
         webClient = new WebClient();
         validator = new PeterPanValidator();
-        parser = new PeterPanParser();
+        parser = new RegularParser();
 
         java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
         webClient.getOptions().setThrowExceptionOnScriptError(false);
@@ -75,7 +77,7 @@ public class DataTest {
 
     @Test
     public void injectType() throws IOException {
-        PeterPanProperty post = new PeterPanProperty();
+        RegularProperty post = new RegularProperty();
 
         Elements elements = Jsoup.connect(MOCK_URL)
                 .cookies(cookies)
@@ -109,14 +111,14 @@ public class DataTest {
 
     @Test
     public void parsePost() throws IOException {
-        PeterPanProperty post;
+        RegularProperty post;
 
         Elements elements = Jsoup.connect(MOCK_URL)
                 .cookies(cookies)
                 .get()
                 .select("#tbody table tbody");
 
-        post = new PostBuilder("TITLE", MOCK_URL, "DATE")
+        post = new RegularPostBuilder("TITLE", MOCK_URL, "DATE")
                 .address(elements.select("#pp_location").text())
                 .price(elements.select("#pp_fee").text())
                 .managementPrice(elements.select("#pp_maintenance").text())
@@ -137,7 +139,6 @@ public class DataTest {
     @Test
     public void initPosts() throws IOException {
         String MOCK_URL = "https://cafe.naver.com/ArticleSearchList.nhn?search.clubid=10322296&search.searchBy=0&search.query=%C1%F8%C1%D6";
-
         Document doc = Jsoup.connect(MOCK_URL).get();
         Elements elements = parser.initPosts(doc, 3);
 
@@ -151,7 +152,6 @@ public class DataTest {
     @Test
     public void parsePosts() throws IOException {
         String MOCK_URL = "https://cafe.naver.com/ArticleSearchList.nhn?search.clubid=10322296&search.searchBy=0&search.query=%C1%F8%C1%D6";
-
         Document doc = Jsoup.connect(MOCK_URL).get();
         Elements elements = parser.initPosts(doc, 3);
 
