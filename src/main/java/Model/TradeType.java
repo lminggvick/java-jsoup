@@ -27,6 +27,15 @@ public enum TradeType implements TypeMapper {
         return name;
     }
 
+    public static TradeType create(String code) {
+        for (TradeType type : values()) {
+            if (type.name.equals(code)) {
+                return type;
+            }
+        }
+        return UNKNOWN;
+    }
+
     @Override
     public String toString() {
         return "TradeType{" +

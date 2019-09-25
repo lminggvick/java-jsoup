@@ -58,7 +58,6 @@ public class DataTest {
 
     @After
     public void after() {
-        webClient.close();
         cookies.clear();
     }
 
@@ -89,11 +88,11 @@ public class DataTest {
             }
         }
 
-        for (PropertyType pType : PropertyType.values()) {
-            if (elements.html().contains(pType.getName())) {
-                post.setPropertyType(pType);
-            }
-        }
+//        for (PropertyType pType : PropertyType.values()) {
+//            if (elements.html().contains(pType.getName())) {
+//                post.setPropertyType(pType);
+//            }
+//        }
 
         logger.debug("Post? {}", post);
     }
@@ -122,6 +121,14 @@ public class DataTest {
                 .price(elements.select("#pp_fee").text())
                 .managementPrice(elements.select("#pp_maintenance").text())
                 .phone(elements.select("#pp_contact").text())
+                .propertyType(elements.select("#pp_building_type").text())
+                .roomCount(elements.select("#pp_room_count").text())
+                .floor("[해당층/전체층] " + elements.select("#pp_floor").text())
+                .managementCategory(elements.select("#pp_maintenance_include").text())
+                .movePossibleDate(elements.select("#pp_moving_date").text())
+                .option(elements.select("#pp_options").text())
+                .heatingType(elements.select("#pp_heating").text())
+                .description(elements.select("#pp_description").text())
                 .build();
 
         logger.debug("Parsed post : {}", post);
@@ -150,5 +157,15 @@ public class DataTest {
 
         logger.debug("el ? {}", elements);
         logger.debug("거르고 거른 매물 객체! : {}", parser.parse(elements, cookies));
+    }
+
+    @Test
+    public void sub() {
+        String str = "";
+        String str2 = "   ";
+
+        assertTrue(str.isEmpty());
+        assertTrue(str.isBlank());
+        assertTrue(str2.trim().isEmpty());
     }
 }

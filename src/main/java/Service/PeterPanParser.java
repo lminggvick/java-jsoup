@@ -57,7 +57,7 @@ public class PeterPanParser implements ParseStrategy {
             }
 
             date = document.select(".date").text();
-            title = post.select(".board-list .article").text();
+            title = post.select("a").text();
 
             document.select("table tbody");
 
@@ -66,6 +66,14 @@ public class PeterPanParser implements ParseStrategy {
                     .price(document.select("#pp_fee").text())
                     .managementPrice(document.select("#pp_maintenance").text())
                     .phone(document.select("#pp_contact").text())
+                    .propertyType(document.select("#pp_building_type").text())
+                    .roomCount(document.select("#pp_room_count").text())
+                    .floor(document.select("#pp_floor").text())
+                    .managementCategory(document.select("#pp_maintenance_include").text())
+                    .movePossibleDate(document.select("#pp_moving_date").text())
+                    .option(document.select("#pp_options").text())
+                    .heatingType(document.select("#pp_heating").text())
+                    .description(document.select("#pp_description").text())
                     .build()
             );
         }

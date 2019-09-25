@@ -18,6 +18,9 @@ public enum PropertyType implements TypeMapper {
     SHOP("상가"),
     FACTORY("공장"),
     OFFICE("오피스텔"),
+    HOUSE("다세대 빌라"),
+    HOUSE2("주택"),
+
     UNKNOWN("Mismatch Property Type");
 
     private String name;
@@ -38,7 +41,7 @@ public enum PropertyType implements TypeMapper {
 
     public static PropertyType create(String code) {
         for (PropertyType type : values()) {
-            if (type.name().equals(code)) {
+            if (type.name.equals(code)) {
                 return type;
             }
         }
