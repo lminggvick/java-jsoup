@@ -3,5 +3,6 @@ package Interface;
 import org.jsoup.select.Elements;
 
 public interface ValidationStrategy {
-    boolean isValidPost(Elements elements);
+    boolean isInvalidPost(Elements elements);
+    boolean isRegularPost(Elements elements);
 }

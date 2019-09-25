@@ -5,13 +5,16 @@ import com.gargoylesoftware.htmlunit.html.HtmlButton;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+/**
+ * Todo)
+ *  1. 현재 피터팬 카페에 관한 액션만 구현되어 있어서, 다형성을 갖도록 리팩토링 해야한다
+ *  2. 이름이 갖는 의미가 에매하다
+ */
 public class CommonsUtils {
 
     private static final String APT_DIRECT_PROVINCES_URL = "https://cafe.naver.com/ArticleList.nhn?search.clubid=10322296&search.menuid=1115&search.boardtype=L";
@@ -45,6 +48,6 @@ public class CommonsUtils {
         currPage = btn.click();
         logger.debug("currPage ? {}", currPage.getUrl());
 
-        return currPage.getUrl().toString();
+        return currPage.getUrl().toString().concat("&search.sortBy=date");
     }
 }
