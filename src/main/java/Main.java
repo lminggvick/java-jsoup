@@ -14,10 +14,7 @@ import java.util.logging.Level;
 
 /**
  * Todo)
- *  1. 키워드로 검색한 모든 게시글 고유 id 를 파싱해야한다.
- *  2. 파싱한 id 를 게시글 수 만큼 Loop 해서 상세 게시글 page 를 크롤링 해야한다.
- *  3. 상세 페이지에서, 매물 구분/연락처/가격 등의 핵심 정보만을 가져와서 자료구조에 넣어야 한다.
- *  4. 모든 루프가 끝나면 csv 파일로 저장한다.
+ *  1. 모든 루프가 끝나면 csv 파일로 저장한다.
  *   > 파싱한 String 데이타를 가공할 필요가 있다
  *
  * Todo)
@@ -56,7 +53,6 @@ public class Main {
     }
 
     public Elements getElements() throws Exception {
-
         // "진주"로 검색한 전체 게시글 목록을 가져온다.
         String url = CommonsUtils.getPostsUrlWithKeyword("진주", webClient);
         Document doc = getDocumentAfterLogin(url);

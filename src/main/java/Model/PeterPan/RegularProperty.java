@@ -8,10 +8,8 @@ import Builder.RegularPostBuilder;
 
 /**
  * Todo)
- *  1. 정형 게시글 / 비정형 게시글 객체를 나눌 필요가 있다
- *  2. 위 Type 에 따라 파싱 전략이 달라야 한다
- *  3. 정형 게시글이나 빈 값을 입력한 객체는 어떻게 처리할 것인지 고려해야한다
- *  4. 거래 타입이 명시안되어 있는 경우, injectType 메소드로 처리하도록 해야한다
+ *  1. 거래 타입이 명시안되어 있는 경우, injectType 메소드로 처리하도록 해야한다
+ *  2. 정형 게시글이나 빈 값을 입력한 객체는 어떻게 처리할 것인지 고려해야한다
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -57,7 +55,7 @@ public class RegularProperty implements ModelMapper {
 
     @Override
     public String toString() {
-        return "\nPost {" +
+        return "\nRegularProperty {" +
                 "\n\t title='" + title + '\'' +
                 ",\n\t url='" + url + '\'' +
                 ",\n\t date=" + date +

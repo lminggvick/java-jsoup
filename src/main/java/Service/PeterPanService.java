@@ -1,32 +1,62 @@
 package Service;
 
+import Factory.ServiceFactory;
 import Mapper.ModelMapper;
-import Strategy.ParseStrategy;
+import Strategy.InitStrategy;
 import Strategy.ValidationStrategy;
-import lombok.Getter;
-import org.apache.xpath.operations.Mod;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Getter
-public abstract class PeterPanService<P extends ModelMapper> implements ParseStrategy {
+public class PeterPanService implements InitStrategy {
     public final String postfix = "&search.sortBy=date";
     public final String prefix = "https://cafe.naver.com";
+
     public ValidationStrategy validator;
 
     private Elements elements;
+    private Document document;
+
+    private List<ModelMapper> properties;
+    private ServiceFactory factory;
+
     private String pageUrl;
+    private String url;
+    private String title;
 
     public PeterPanService() {
         this.validator = new PeterPanValidator();
+        this.factory = new ServiceFactory();
     }
 
-    public abstract List<P> parse(Elements elements, Map<String, String> cookies) throws IOException;
+    public List<ModelMapper> parseAll(Elements elements, Map<String, String> cookies) throws IOException {
+        properties = new ArrayList<>();
+
+        for (Element post : elements) {
+            url = prefix.concat(post.select("a").attr("href"));
+            title = post.select("a").text();
+
+            document = Jsoup.connect(url)
+                    .cookies(cookies)
+                    .get();
+
+            if (validator.isInvalidPost(document.select(".tit-box div table tbody tr td a"))) {
+                continue;
+            }
+
+            boolean flag = validator.isRegularPost(document.select("#tbody"));
+
+            properties.add(factory.getTypeServiceCreator(flag).parse(document, url, title));
+        }
+
+        return properties;
+    }
 
     @Override
     public Elements initPosts(Document document, int maxPage) throws IOException {

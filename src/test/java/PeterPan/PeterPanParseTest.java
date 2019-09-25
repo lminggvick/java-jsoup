@@ -1,13 +1,18 @@
 package PeterPan;
 
 import Builder.RegularPostBuilder;
-import Strategy.ParseStrategy;
-import Strategy.ValidationStrategy;
+import Mapper.ModelMapper;
+import Mapper.TypeMapper;
+import Model.PeterPan.IrregularProperty;
 import Model.PeterPan.RegularProperty;
 import Model.Type.TradeType;
 import Service.NaverLoginService;
-import Service.Peterpan.parser.RegularParser;
+import Service.PeterPanService;
 import Service.PeterPanValidator;
+import Service.Peterpan.parser.IrregularParser;
+import Service.Peterpan.parser.RegularParser;
+import Strategy.ParseStrategy;
+import Strategy.ValidationStrategy;
 import com.gargoylesoftware.htmlunit.WebClient;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,17 +34,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class RegularPostTest {
+public class PeterPanParseTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(RegularPostTest.class);
-    private static final String MOCK_URL = "https://cafe.naver.com/ArticleRead.nhn?clubid=10322296&page=1&inCafeSearch=true&searchBy=1&query=%C1%F8%C1%D6&includeAll=&exclude=&include=&exact=&searchdate=all&media=0&sortBy=date&articleid=12953032&referrerAllArticles=true";
-    private static final String MOCK_POSTS_URL = "https://cafe.naver.com/ArticleSearchList.nhn?search.clubid=10322296&search.searchBy=0&search.query=%C1%F8%C1%D6";
+    private static final Logger logger = LoggerFactory.getLogger(PeterPanParseTest.class);
+    private static final String REGULAR_POST = "https://cafe.naver.com/ArticleRead.nhn?clubid=10322296&page=1&inCafeSearch=true&searchBy=1&query=%C1%F8%C1%D6&includeAll=&exclude=&include=&exact=&searchdate=all&media=0&sortBy=date&articleid=12953032&referrerAllArticles=true";
+    private static final String IRREGULAR_POST = "https://cafe.naver.com/ArticleRead.nhn?clubid=10322296&page=2&inCafeSearch=true&searchBy=1&query=%C1%F8%C1%D6&includeAll=&exclude=&include=&exact=&searchdate=all&media=0&sortBy=date&articleid=12885000&referrerAllArticles=true";
 
     private static Map<String, String> cookies;
     private static WebClient webClient;
 
     private static ValidationStrategy validator;
-    private static ParseStrategy parser;
+
+    private static PeterPanService pService;
 
     private static NaverLoginService service;
 
@@ -49,7 +55,7 @@ public class RegularPostTest {
         cookies = new HashMap<>();
         webClient = new WebClient();
         validator = new PeterPanValidator();
-        parser = new RegularParser();
+        pService = new PeterPanService();
 
         java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
         webClient.getOptions().setThrowExceptionOnScriptError(false);
@@ -65,7 +71,7 @@ public class RegularPostTest {
 
     @Test
     public void postValidator() throws IOException {
-        Elements elements = Jsoup.connect(MOCK_URL)
+        Elements elements = Jsoup.connect(REGULAR_POST)
                 .cookies(cookies)
                 .get()
                 .select(".tit-box tbody tr a");
@@ -79,7 +85,7 @@ public class RegularPostTest {
     public void injectType() throws IOException {
         RegularProperty post = new RegularProperty();
 
-        Elements elements = Jsoup.connect(MOCK_URL)
+        Elements elements = Jsoup.connect(REGULAR_POST)
                 .cookies(cookies)
                 .get()
                 .select("#tbody");
@@ -101,7 +107,7 @@ public class RegularPostTest {
 
     @Test
     public void checkPostType() throws IOException {
-        Elements elements = Jsoup.connect(MOCK_URL)
+        Elements elements = Jsoup.connect(REGULAR_POST)
                 .cookies(cookies)
                 .get()
                 .select("#tbody");
@@ -113,19 +119,19 @@ public class RegularPostTest {
     public void parsePost() throws IOException {
         RegularProperty post;
 
-        Elements elements = Jsoup.connect(MOCK_URL)
+        Elements elements = Jsoup.connect(REGULAR_POST)
                 .cookies(cookies)
                 .get()
                 .select("#tbody table tbody");
 
-        post = new RegularPostBuilder("TITLE", MOCK_URL, "DATE")
+        post = new RegularPostBuilder("TITLE", REGULAR_POST, "DATE")
                 .address(elements.select("#pp_location").text())
                 .price(elements.select("#pp_fee").text())
                 .managementPrice(elements.select("#pp_maintenance").text())
                 .phone(elements.select("#pp_contact").text())
                 .propertyType(elements.select("#pp_building_type").text())
                 .roomCount(elements.select("#pp_room_count").text())
-                .floor("[해당층/전체층] " + elements.select("#pp_floor").text())
+                .floor(elements.select("#pp_floor").text())
                 .managementCategory(elements.select("#pp_maintenance_include").text())
                 .movePossibleDate(elements.select("#pp_moving_date").text())
                 .option(elements.select("#pp_options").text())
@@ -140,7 +146,7 @@ public class RegularPostTest {
     public void initPosts() throws IOException {
         String MOCK_URL = "https://cafe.naver.com/ArticleSearchList.nhn?search.clubid=10322296&search.searchBy=0&search.query=%C1%F8%C1%D6";
         Document doc = Jsoup.connect(MOCK_URL).get();
-        Elements elements = parser.initPosts(doc, 3);
+        Elements elements = pService.initPosts(doc, 3);
 
         for(Element el : elements) {
             logger.debug(el.toString());
@@ -153,19 +159,23 @@ public class RegularPostTest {
     public void parsePosts() throws IOException {
         String MOCK_URL = "https://cafe.naver.com/ArticleSearchList.nhn?search.clubid=10322296&search.searchBy=0&search.query=%C1%F8%C1%D6";
         Document doc = Jsoup.connect(MOCK_URL).get();
-        Elements elements = parser.initPosts(doc, 3);
+        Elements elements = pService.initPosts(doc, 3);
 
         logger.debug("el ? {}", elements);
-        logger.debug("거르고 거른 매물 객체! : {}", parser.parse(elements, cookies));
+        logger.debug("거르고 거른 매물 객체! : {}", pService.parseAll(elements, cookies));
     }
 
     @Test
-    public void sub() {
-        String str = "";
-        String str2 = "   ";
+    public void parseIrregularPost() throws IOException {
+        IrregularProperty post;
 
-        assertTrue(str.isEmpty());
-        assertTrue(str.isBlank());
-        assertTrue(str2.trim().isEmpty());
+        Elements elements = Jsoup.connect(IRREGULAR_POST)
+                .cookies(cookies)
+                .get()
+                .select("#tbody");
+
+        post = new IrregularProperty("TITLE", elements.select("#tbody").text(), "DATE", "URL");
+
+        logger.debug("Post? {}", post);
     }
 }
