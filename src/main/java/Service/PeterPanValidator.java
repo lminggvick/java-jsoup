@@ -1,6 +1,6 @@
 package Service;
 
-import Interface.ValidationStrategy;
+import Strategy.ValidationStrategy;
 import Model.Type.RegularType;
 import Model.ValidKeyword;
 import org.apache.commons.lang3.ObjectUtils;

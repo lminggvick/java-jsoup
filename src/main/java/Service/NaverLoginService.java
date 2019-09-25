@@ -1,6 +1,6 @@
 package Service;
 
-import Interface.Login;
+import Strategy.Login;
 import com.gargoylesoftware.htmlunit.CookieManager;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;

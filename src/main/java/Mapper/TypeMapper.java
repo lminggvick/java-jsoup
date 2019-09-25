@@ -1,4 +1,4 @@
-package Interface;
+package Mapper;
 
 public interface TypeMapper {
     String getCode();

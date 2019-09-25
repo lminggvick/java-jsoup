@@ -1,6 +1,6 @@
 package Model;
 
-import Interface.TypeMapper;
+import Mapper.TypeMapper;
 
 public enum ValidKeyword implements TypeMapper {
     KEY1("경상도지역 직거래"),

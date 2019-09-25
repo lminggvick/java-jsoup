@@ -1,8 +1,8 @@
 package PeterPan;
 
 import Builder.RegularPostBuilder;
-import Interface.ParseStrategy;
-import Interface.ValidationStrategy;
+import Strategy.ParseStrategy;
+import Strategy.ValidationStrategy;
 import Model.PeterPan.RegularProperty;
 import Model.Type.TradeType;
 import Service.NaverLoginService;

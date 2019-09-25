@@ -1,4 +1,4 @@
-package Interface;
+package Strategy;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 

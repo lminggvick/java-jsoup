@@ -1,5 +1,6 @@
 package Model.PeterPan;
 
+import Mapper.ModelMapper;
 import Model.Type.TradeType;
 import lombok.*;
 
@@ -17,7 +18,7 @@ import Builder.RegularPostBuilder;
 @EqualsAndHashCode
 @Getter
 @Setter
-public class RegularProperty {
+public class RegularProperty implements ModelMapper {
     private String title;
     private String url;
     private String date;

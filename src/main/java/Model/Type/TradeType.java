@@ -1,6 +1,6 @@
 package Model.Type;
 
-import Interface.TypeMapper;
+import Mapper.TypeMapper;
 
 public enum TradeType implements TypeMapper {
     /**

@@ -1,4 +1,4 @@
-package Interface;
+package Strategy;
 
 import org.jsoup.select.Elements;
 

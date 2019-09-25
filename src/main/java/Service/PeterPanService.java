@@ -1,7 +1,10 @@
 package Service;
 
-import Interface.ParseStrategy;
-import Model.PeterPan.RegularProperty;
+import Mapper.ModelMapper;
+import Strategy.ParseStrategy;
+import Strategy.ValidationStrategy;
+import lombok.Getter;
+import org.apache.xpath.operations.Mod;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -10,15 +13,20 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public abstract class PeterPanService implements ParseStrategy {
+@Getter
+public abstract class PeterPanService<P extends ModelMapper> implements ParseStrategy {
     public final String postfix = "&search.sortBy=date";
     public final String prefix = "https://cafe.naver.com";
+    public ValidationStrategy validator;
 
     private Elements elements;
     private String pageUrl;
 
-    @Override
-    public abstract List<RegularProperty> parse(Elements elements, Map<String, String> cookies) throws IOException;
+    public PeterPanService() {
+        this.validator = new PeterPanValidator();
+    }
+
+    public abstract List<P> parse(Elements elements, Map<String, String> cookies) throws IOException;
 
     @Override
     public Elements initPosts(Document document, int maxPage) throws IOException {

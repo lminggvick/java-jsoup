@@ -1,5 +1,6 @@
 package Model.PeterPan;
 
+import Mapper.ModelMapper;
 import lombok.*;
 
 @AllArgsConstructor
@@ -8,7 +9,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class IrregularProperty {
+public class IrregularProperty implements ModelMapper {
     private String title;
     private String description;
     private String date;

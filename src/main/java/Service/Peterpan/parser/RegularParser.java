@@ -1,10 +1,8 @@
 package Service.Peterpan.parser;
 
 import Builder.RegularPostBuilder;
-import Interface.ValidationStrategy;
 import Model.PeterPan.RegularProperty;
 import Service.PeterPanService;
-import Service.PeterPanValidator;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,10 +18,9 @@ import java.util.Map;
 /**
  * Todo) 무엇을 파싱 할 것인지?
  */
-public class RegularParser extends PeterPanService {
+public class RegularParser extends PeterPanService<RegularProperty> {
     private static final Logger logger = LoggerFactory.getLogger(RegularParser.class);
 
-    private ValidationStrategy validator;
     private List<RegularProperty> properties;
 
     private Document document;
@@ -33,15 +30,14 @@ public class RegularParser extends PeterPanService {
 
     public RegularParser() {
         super();
-        this.validator = new PeterPanValidator();
     }
 
     @Override
     public List<RegularProperty> parse(Elements elements, Map<String, String> cookies) throws IOException {
         properties = new ArrayList<>();
 
-        for(Element post : elements) {
-            url = super.prefix.concat(post.select("a").attr("href"));
+        for (Element post : elements) {
+            url = prefix.concat(post.select("a").attr("href"));
 
             document = Jsoup.connect(url)
                     .cookies(cookies)

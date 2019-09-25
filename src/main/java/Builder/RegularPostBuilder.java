@@ -1,6 +1,5 @@
 package Builder;
 
-import Interface.Buildable;
 import Model.PeterPan.RegularProperty;
 import Model.Type.TradeType;
 import lombok.Getter;

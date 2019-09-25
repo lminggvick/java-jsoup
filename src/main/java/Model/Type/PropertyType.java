@@ -1,6 +1,6 @@
 package Model.Type;
 
-import Interface.TypeMapper;
+import Mapper.TypeMapper;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)

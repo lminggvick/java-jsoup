@@ -1,4 +1,4 @@
-import Interface.Login;
+import Strategy.Login;
 import Service.NaverLoginService;
 import Utils.CommonsUtils;
 import com.gargoylesoftware.htmlunit.WebClient;
