@@ -46,7 +46,8 @@ public class PeterPanService implements InitStrategy {
                     .cookies(cookies)
                     .get();
 
-            if (validator.isInvalidPost(document.select(".tit-box div table tbody tr td a"))) {
+//            if (validator.isInvalidPost(document.select(".tit-box div table tbody tr td a"))) {
+            if (validator.postValidate(document.select(".inbox"))) {
                 continue;
             }
 

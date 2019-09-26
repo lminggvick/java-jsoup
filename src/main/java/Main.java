@@ -14,12 +14,11 @@ import java.util.logging.Level;
 
 /**
  * Todo)
- *  1. 모든 루프가 끝나면 csv 파일로 저장한다.
- *   > 파싱한 String 데이타를 가공할 필요가 있다
+ *  1. 모든 루프가 끝나면 csv 파일로 저장해야한다
  *
  * Todo)
- *  1. WebClient 의 Main 에서의 역할이 에매하다.
- *  2. 이 때문에, 파라미터로 넣어줘야 하는 경우가 빈번함.
+ *  1. WebClient 의 Main 에서의 역할이 에매하다
+ *  2. 이 때문에, 파라미터로 넣어줘야 하는 경우가 빈번함
  */
 public class Main {
 

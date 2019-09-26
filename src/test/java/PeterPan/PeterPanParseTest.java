@@ -1,17 +1,12 @@
 package PeterPan;
 
 import Builder.RegularPostBuilder;
-import Mapper.ModelMapper;
-import Mapper.TypeMapper;
 import Model.PeterPan.IrregularProperty;
 import Model.PeterPan.RegularProperty;
 import Model.Type.TradeType;
 import Service.NaverLoginService;
 import Service.PeterPanService;
 import Service.PeterPanValidator;
-import Service.Peterpan.parser.IrregularParser;
-import Service.Peterpan.parser.RegularParser;
-import Strategy.ParseStrategy;
 import Strategy.ValidationStrategy;
 import com.gargoylesoftware.htmlunit.WebClient;
 import org.jsoup.Jsoup;
@@ -78,7 +73,7 @@ public class PeterPanParseTest {
 
         logger.debug(elements.toString());
 
-        assertFalse(validator.isInvalidPost(elements));
+        assertFalse(validator.postValidate(elements));
     }
 
     @Test
@@ -161,7 +156,7 @@ public class PeterPanParseTest {
         Document doc = Jsoup.connect(MOCK_URL).get();
         Elements elements = pService.initPosts(doc, 3);
 
-        logger.debug("el ? {}", elements);
+        logger.debug("el ? {}", elements.text());
         logger.debug("거르고 거른 매물 객체! : {}", pService.parseAll(elements, cookies));
     }
 

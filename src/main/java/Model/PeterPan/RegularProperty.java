@@ -6,11 +6,6 @@ import lombok.*;
 
 import Builder.RegularPostBuilder;
 
-/**
- * Todo)
- *  1. 거래 타입이 명시안되어 있는 경우, injectType 메소드로 처리하도록 해야한다
- *  2. 정형 게시글이나 빈 값을 입력한 객체는 어떻게 처리할 것인지 고려해야한다
- */
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
@@ -63,7 +58,7 @@ public class RegularProperty implements ModelMapper {
                 ",\n\t address='" + address + '\'' +
                 ",\n\t price='" + price + '\'' +
                 ",\n\t managementPrice='" + managementPrice + '\'' +
-                ",\n\t propertyType=" + propertyType + '\'' +
+                ",\n\t propertyType='" + propertyType + '\'' +
                 ",\n\t roomCount='" + roomCount + '\'' +
                 ",\n\t floor='" + floor + '\'' +
                 ",\n\t managementCategory='" + managementCategory + '\'' +
